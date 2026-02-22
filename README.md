@@ -10,13 +10,13 @@ OmniVault is a unified Go library for secret management across multiple provider
 
 ## Features
 
-- **Unified Interface**: Single API for all secret storage backends
-- **Extensible Architecture**: Add custom providers as separate Go modules without modifying the core library
-- **URI-Based Resolution**: Reference secrets using URIs like `op://vault/item/field` or `aws-sm://secret-name`
-- **Built-in Providers**: Environment variables, file-based, and in-memory storage included
-- **Zero External Dependencies**: Core library has no external dependencies beyond the standard library
-- **CLI Tool**: Command-line interface with encrypted local storage and daemon architecture
-- **Secure Local Storage**: AES-256-GCM encryption with Argon2id key derivation
+- 🔗 **Unified Interface**: Single API for all secret storage backends
+- 🧩 **Extensible Architecture**: Add custom providers as separate Go modules without modifying the core library
+- 🌐 **URI-Based Resolution**: Reference secrets using URIs like `op://vault/item/field` or `aws-sm://secret-name`
+- 📦 **Built-in Providers**: Environment variables, file-based, and in-memory storage included
+- ⚡ **Zero External Dependencies**: Core library has no external dependencies beyond the standard library
+- 💻 **CLI Tool**: Command-line interface with encrypted local storage and daemon architecture
+- 🔐 **Secure Local Storage**: AES-256-GCM encryption with Argon2id key derivation
 
 ## Installation
 
