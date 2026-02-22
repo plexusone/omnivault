@@ -42,7 +42,7 @@ func main() {
 	case "help", "-h", "--help":
 		printUsage()
 	default:
-		fmt.Fprintf(os.Stderr, "Unknown command: %s\n\n", cmd)
+		fmt.Fprintf(os.Stderr, "Unknown command: %s\n\n", cmd) //nolint:gosec // G705: stderr output, not HTML
 		printUsage()
 		os.Exit(1)
 	}

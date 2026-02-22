@@ -150,7 +150,7 @@ func cmdStatus(_ []string) error {
 
 // readPassword reads a password from the terminal without echo.
 func readPassword() (string, error) {
-	fd := int(os.Stdin.Fd())
+	fd := int(os.Stdin.Fd()) //nolint:gosec // G115: Fd() returns small values, overflow not possible
 
 	// Try to read without echo
 	if term.IsTerminal(fd) {

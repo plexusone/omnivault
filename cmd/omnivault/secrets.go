@@ -58,7 +58,7 @@ func cmdSet(args []string) error {
 		// Prompt for value
 		fmt.Print("Enter secret value: ")
 		var err error
-		fd := int(os.Stdin.Fd())
+		fd := int(os.Stdin.Fd()) //nolint:gosec // G115: Fd() returns small values, overflow not possible
 		if term.IsTerminal(fd) {
 			// Read without echo for sensitive data
 			bytes, err := term.ReadPassword(fd)

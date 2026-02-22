@@ -7,7 +7,7 @@ import "time"
 
 // UnlockRequest is the request to unlock the vault.
 type UnlockRequest struct {
-	Password string `json:"password"`
+	Password string `json:"password"` //nolint:gosec // G117: password field is intentional for vault
 }
 
 // SetSecretRequest is the request to set a secret.
@@ -25,7 +25,7 @@ type ChangePasswordRequest struct {
 
 // InitRequest is the request to initialize a new vault.
 type InitRequest struct {
-	Password string `json:"password"`
+	Password string `json:"password"` //nolint:gosec // G117: password field is intentional for vault
 }
 
 // Response types for daemon IPC.

@@ -194,7 +194,7 @@ func (c *Client) request(ctx context.Context, method, path string, body, result 
 		req.Header.Set("Content-Type", "application/json")
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.httpClient.Do(req) //nolint:gosec // G704: request goes to localhost via unix socket
 	if err != nil {
 		return fmt.Errorf("request failed: %w", err)
 	}
