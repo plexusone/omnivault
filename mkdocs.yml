@@ -4,8 +4,7 @@ site_url: https://agentplexus.github.io/omnivault
 repo_url: https://github.com/agentplexus/omnivault
 repo_name: agentplexus/omnivault
 
-docs_dir: docsrc
-site_dir: docs
+docs_dir: docs
 
 theme:
   name: material
