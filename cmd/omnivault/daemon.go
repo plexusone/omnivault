@@ -7,10 +7,11 @@ import (
 	"os/exec"
 	"strconv"
 
+	"github.com/grokify/oscompat/process"
+
 	"github.com/plexusone/omnivault/internal/client"
 	"github.com/plexusone/omnivault/internal/config"
 	"github.com/plexusone/omnivault/internal/daemon"
-	"github.com/grokify/oscompat/process"
 )
 
 func cmdDaemon(args []string) error {
