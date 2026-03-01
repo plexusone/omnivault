@@ -1,9 +1,9 @@
 # OmniVault
 
-[![Build Status](https://github.com/agentplexus/omnivault/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/agentplexus/omnivault/actions/workflows/ci.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/agentplexus/omnivault)](https://goreportcard.com/report/github.com/agentplexus/omnivault)
-[![GoDoc](https://pkg.go.dev/badge/github.com/agentplexus/omnivault)](https://pkg.go.dev/github.com/agentplexus/omnivault)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/agentplexus/omnivault/blob/master/LICENSE)
+[![Build Status](https://github.com/plexusone/omnivault/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/plexusone/omnivault/actions/workflows/ci.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/plexusone/omnivault)](https://goreportcard.com/report/github.com/plexusone/omnivault)
+[![GoDoc](https://pkg.go.dev/badge/github.com/plexusone/omnivault)](https://pkg.go.dev/github.com/plexusone/omnivault)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/plexusone/omnivault/blob/master/LICENSE)
 
 OmniVault is a unified Go library for secret management across multiple providers. It provides a single interface for accessing secrets from password managers, cloud secret managers, enterprise vaults, and local storage.
 
@@ -24,7 +24,7 @@ OmniVault is a unified Go library for secret management across multiple provider
 Import OmniVault into your Go application to access secrets from multiple providers:
 
 ```go
-import "github.com/agentplexus/omnivault"
+import "github.com/plexusone/omnivault"
 
 client, _ := omnivault.NewClient(omnivault.Config{
     Provider: omnivault.ProviderEnv,
@@ -62,4 +62,4 @@ omnivault get database/password
 
 ## License
 
-MIT License - see [LICENSE](https://github.com/agentplexus/omnivault/blob/master/LICENSE) for details.
+MIT License - see [LICENSE](https://github.com/plexusone/omnivault/blob/master/LICENSE) for details.

@@ -23,13 +23,13 @@ OmniVault is a unified Go library for secret management across multiple provider
 ### Go Library
 
 ```bash
-go get github.com/agentplexus/omnivault
+go get github.com/plexusone/omnivault
 ```
 
 ### CLI Tool
 
 ```bash
-go install github.com/agentplexus/omnivault/cmd/omnivault@latest
+go install github.com/plexusone/omnivault/cmd/omnivault@latest
 ```
 
 ## Quick Start
@@ -44,7 +44,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/agentplexus/omnivault"
+    "github.com/plexusone/omnivault"
 )
 
 func main() {
@@ -77,9 +77,9 @@ import (
     "context"
     "fmt"
 
-    "github.com/agentplexus/omnivault"
-    "github.com/agentplexus/omnivault/providers/env"
-    "github.com/agentplexus/omnivault/providers/memory"
+    "github.com/plexusone/omnivault"
+    "github.com/plexusone/omnivault/providers/env"
+    "github.com/plexusone/omnivault/providers/memory"
 )
 
 func main() {
@@ -110,9 +110,9 @@ import (
     "context"
     "fmt"
 
-    "github.com/agentplexus/omnivault"
-    aws "github.com/agentplexus/omnivault-aws"
-    "github.com/agentplexus/omnivault-keyring"
+    "github.com/plexusone/omnivault"
+    aws "github.com/plexusone/omnivault-aws"
+    "github.com/plexusone/omnivault-keyring"
 )
 
 func main() {
@@ -154,13 +154,13 @@ First-party provider modules maintained alongside OmniVault:
 
 | Module | Providers | Schemes |
 |--------|-----------|---------|
-| [omnivault-aws](https://github.com/agentplexus/omnivault-aws) | AWS Secrets Manager, AWS Parameter Store | `aws-sm://`, `aws-ssm://` |
-| [omnivault-keyring](https://github.com/agentplexus/omnivault-keyring) | macOS Keychain, Windows Credential Manager, Linux Secret Service | `keyring://` |
+| [omnivault-aws](https://github.com/plexusone/omnivault-aws) | AWS Secrets Manager, AWS Parameter Store | `aws-sm://`, `aws-ssm://` |
+| [omnivault-keyring](https://github.com/plexusone/omnivault-keyring) | macOS Keychain, Windows Credential Manager, Linux Secret Service | `keyring://` |
 
 ```bash
 # Install official provider modules
-go get github.com/agentplexus/omnivault-aws
-go get github.com/agentplexus/omnivault-keyring
+go get github.com/plexusone/omnivault-aws
+go get github.com/plexusone/omnivault-keyring
 ```
 
 ### Community Providers
@@ -182,7 +182,7 @@ package myprovider
 
 import (
     "context"
-    "github.com/agentplexus/omnivault/vault"
+    "github.com/plexusone/omnivault/vault"
 )
 
 type Provider struct {
@@ -236,7 +236,7 @@ Then use it with OmniVault:
 
 ```go
 import (
-    "github.com/agentplexus/omnivault"
+    "github.com/plexusone/omnivault"
     "github.com/yourorg/omnivault-myprovider"
 )
 
@@ -359,7 +359,7 @@ omnivault/
 To create an external provider module:
 
 1. Create a new Go module (e.g., `github.com/yourorg/omnivault-onepassword`)
-2. Import only `github.com/agentplexus/omnivault/vault`
+2. Import only `github.com/plexusone/omnivault/vault`
 3. Implement the `vault.Vault` interface
 4. Export a constructor function returning `vault.Vault`
 
@@ -496,15 +496,15 @@ Contributions are welcome! Please submit pull requests or create issues for bugs
 
 MIT License - see [LICENSE](LICENSE) for details.
 
- [build-status-svg]: https://github.com/agentplexus/omnivault/actions/workflows/ci.yaml/badge.svg?branch=main
- [build-status-url]: https://github.com/agentplexus/omnivault/actions/workflows/ci.yaml
- [lint-status-svg]: https://github.com/agentplexus/omnivault/actions/workflows/lint.yaml/badge.svg?branch=main
- [lint-status-url]: https://github.com/agentplexus/omnivault/actions/workflows/lint.yaml
- [goreport-svg]: https://goreportcard.com/badge/github.com/agentplexus/omnivault
- [goreport-url]: https://goreportcard.com/report/github.com/agentplexus/omnivault
- [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/agentplexus/omnivault
- [docs-godoc-url]: https://pkg.go.dev/github.com/agentplexus/omnivault
+ [build-status-svg]: https://github.com/plexusone/omnivault/actions/workflows/ci.yaml/badge.svg?branch=main
+ [build-status-url]: https://github.com/plexusone/omnivault/actions/workflows/ci.yaml
+ [lint-status-svg]: https://github.com/plexusone/omnivault/actions/workflows/lint.yaml/badge.svg?branch=main
+ [lint-status-url]: https://github.com/plexusone/omnivault/actions/workflows/lint.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/plexusone/omnivault
+ [goreport-url]: https://goreportcard.com/report/github.com/plexusone/omnivault
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/plexusone/omnivault
+ [docs-godoc-url]: https://pkg.go.dev/github.com/plexusone/omnivault
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-url]: https://github.com/agentplexus/omnivault/blob/master/LICENSE
- [used-by-svg]: https://sourcegraph.com/github.com/agentplexus/omnivault/-/badge.svg
- [used-by-url]: https://sourcegraph.com/github.com/agentplexus/omnivault?badge
+ [license-url]: https://github.com/plexusone/omnivault/blob/master/LICENSE
+ [used-by-svg]: https://sourcegraph.com/github.com/plexusone/omnivault/-/badge.svg
+ [used-by-url]: https://sourcegraph.com/github.com/plexusone/omnivault?badge

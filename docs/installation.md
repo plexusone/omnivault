@@ -5,7 +5,7 @@
 Add OmniVault to your Go project:
 
 ```bash
-go get github.com/agentplexus/omnivault
+go get github.com/plexusone/omnivault
 ```
 
 ### Requirements
@@ -18,10 +18,10 @@ Install official provider modules as needed:
 
 ```bash
 # AWS Secrets Manager and Parameter Store
-go get github.com/agentplexus/omnivault-aws
+go get github.com/plexusone/omnivault-aws
 
 # OS Keyring (macOS Keychain, Windows Credential Manager, Linux Secret Service)
-go get github.com/agentplexus/omnivault-keyring
+go get github.com/plexusone/omnivault-keyring
 ```
 
 ## CLI Tool
@@ -29,7 +29,7 @@ go get github.com/agentplexus/omnivault-keyring
 Install the `omnivault` command-line tool:
 
 ```bash
-go install github.com/agentplexus/omnivault/cmd/omnivault@latest
+go install github.com/plexusone/omnivault/cmd/omnivault@latest
 ```
 
 ### Verify Installation
@@ -58,7 +58,7 @@ omnivault version
 Clone the repository and build:
 
 ```bash
-git clone https://github.com/agentplexus/omnivault.git
+git clone https://github.com/plexusone/omnivault.git
 cd omnivault
 
 # Build the CLI

@@ -5,7 +5,7 @@ This guide shows you how to use the `omnivault` command-line tool for secure loc
 ## Installation
 
 ```bash
-go install github.com/agentplexus/omnivault/cmd/omnivault@latest
+go install github.com/plexusone/omnivault/cmd/omnivault@latest
 ```
 
 Verify the installation:

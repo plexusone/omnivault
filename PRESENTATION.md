@@ -198,7 +198,7 @@ package main
 
 import (
     "context"
-    "github.com/agentplexus/omnivault"
+    "github.com/plexusone/omnivault"
 )
 
 func main() {
@@ -223,8 +223,8 @@ func main() {
 
 ```go
 import (
-    "github.com/agentplexus/omnivault"
-    aws "github.com/agentplexus/omnivault-aws"
+    "github.com/plexusone/omnivault"
+    aws "github.com/plexusone/omnivault-aws"
 )
 
 // Create AWS Secrets Manager provider
@@ -248,8 +248,8 @@ password := secret.GetField("password")
 
 ```go
 import (
-    "github.com/agentplexus/omnivault"
-    "github.com/agentplexus/omnivault-keyring"
+    "github.com/plexusone/omnivault"
+    "github.com/plexusone/omnivault-keyring"
 )
 
 // Create OS keyring provider
@@ -296,7 +296,7 @@ Same code, different backends!
 ```go
 package myprovider
 
-import "github.com/agentplexus/omnivault/vault"
+import "github.com/plexusone/omnivault/vault"
 
 type Provider struct { /* fields */ }
 
@@ -338,7 +338,7 @@ omnivault/
 Consistent errors across all providers:
 
 ```go
-import "github.com/agentplexus/omnivault/vault"
+import "github.com/plexusone/omnivault/vault"
 
 secret, err := client.Get(ctx, "path")
 if errors.Is(err, vault.ErrSecretNotFound) {
@@ -403,14 +403,14 @@ provider.Rotate(ctx, "path")  // Trigger rotation
 
 ```bash
 # Install core library
-go get github.com/agentplexus/omnivault
+go get github.com/plexusone/omnivault
 
 # Install official providers (as needed)
-go get github.com/agentplexus/omnivault-aws
-go get github.com/agentplexus/omnivault-keyring
+go get github.com/plexusone/omnivault-aws
+go get github.com/plexusone/omnivault-keyring
 ```
 
-**GitHub:** github.com/agentplexus/omnivault
+**GitHub:** github.com/plexusone/omnivault
 
 ---
 
@@ -420,7 +420,7 @@ go get github.com/agentplexus/omnivault-keyring
 
 ### Resources
 
-Documentation: pkg.go.dev/github.com/agentplexus/omnivault
-Source: github.com/agentplexus/omnivault
-AWS Provider: github.com/agentplexus/omnivault-aws
-Keyring Provider: github.com/agentplexus/omnivault-keyring
+Documentation: pkg.go.dev/github.com/plexusone/omnivault
+Source: github.com/plexusone/omnivault
+AWS Provider: github.com/plexusone/omnivault-aws
+Keyring Provider: github.com/plexusone/omnivault-keyring

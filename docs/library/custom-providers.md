@@ -48,7 +48,7 @@ go mod init github.com/yourorg/omnivault-myprovider
 
 ```go
 // Only import the interface package - no dependency on full omnivault
-go get github.com/agentplexus/omnivault/vault
+go get github.com/plexusone/omnivault/vault
 ```
 
 ### 3. Implement the interface
@@ -58,7 +58,7 @@ package myprovider
 
 import (
     "context"
-    "github.com/agentplexus/omnivault/vault"
+    "github.com/plexusone/omnivault/vault"
 )
 
 type Provider struct {
@@ -145,7 +145,7 @@ func (p *Provider) Close() error {
 
 ```go
 import (
-    "github.com/agentplexus/omnivault"
+    "github.com/plexusone/omnivault"
     "github.com/yourorg/omnivault-myprovider"
 )
 
@@ -176,7 +176,7 @@ value, _ := resolver.Resolve(ctx, "myprovider://my/secret")
 Return standard errors when applicable:
 
 ```go
-import "github.com/agentplexus/omnivault/vault"
+import "github.com/plexusone/omnivault/vault"
 
 // Use standard errors
 if notFound {

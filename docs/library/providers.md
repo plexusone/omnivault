@@ -11,7 +11,7 @@ These providers are included in the core library with zero external dependencies
 Read secrets from environment variables:
 
 ```go
-import "github.com/agentplexus/omnivault/providers/env"
+import "github.com/plexusone/omnivault/providers/env"
 
 provider := env.New()
 
@@ -40,7 +40,7 @@ value, _ := resolver.Resolve(ctx, "env://API_KEY")
 Read secrets from files:
 
 ```go
-import "github.com/agentplexus/omnivault/providers/file"
+import "github.com/plexusone/omnivault/providers/file"
 
 provider := file.New(file.Config{
     BasePath: "/etc/secrets",
@@ -71,7 +71,7 @@ value, _ := resolver.Resolve(ctx, "file://database/password")
 In-memory storage, useful for testing:
 
 ```go
-import "github.com/agentplexus/omnivault/providers/memory"
+import "github.com/plexusone/omnivault/providers/memory"
 
 // Empty store
 provider := memory.New()
@@ -101,11 +101,11 @@ First-party modules maintained alongside OmniVault. Install separately to avoid 
 AWS Secrets Manager and Parameter Store:
 
 ```bash
-go get github.com/agentplexus/omnivault-aws
+go get github.com/plexusone/omnivault-aws
 ```
 
 ```go
-import aws "github.com/agentplexus/omnivault-aws"
+import aws "github.com/plexusone/omnivault-aws"
 
 // AWS Secrets Manager
 smProvider, _ := aws.NewSecretsManager(aws.Config{
@@ -128,11 +128,11 @@ resolver.Register("aws-ssm", ssmProvider)
 OS-level keyring integration:
 
 ```bash
-go get github.com/agentplexus/omnivault-keyring
+go get github.com/plexusone/omnivault-keyring
 ```
 
 ```go
-import "github.com/agentplexus/omnivault-keyring"
+import "github.com/plexusone/omnivault-keyring"
 
 provider := keyring.New(keyring.Config{
     ServiceName: "myapp",

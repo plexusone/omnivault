@@ -12,7 +12,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/agentplexus/omnivault"
+    "github.com/plexusone/omnivault"
 )
 
 func main() {
@@ -47,9 +47,9 @@ import (
     "context"
     "fmt"
 
-    "github.com/agentplexus/omnivault"
-    "github.com/agentplexus/omnivault/providers/env"
-    "github.com/agentplexus/omnivault/providers/memory"
+    "github.com/plexusone/omnivault"
+    "github.com/plexusone/omnivault/providers/env"
+    "github.com/plexusone/omnivault/providers/memory"
 )
 
 func main() {
@@ -82,9 +82,9 @@ import (
     "context"
     "fmt"
 
-    "github.com/agentplexus/omnivault"
-    aws "github.com/agentplexus/omnivault-aws"
-    "github.com/agentplexus/omnivault-keyring"
+    "github.com/plexusone/omnivault"
+    aws "github.com/plexusone/omnivault-aws"
+    "github.com/plexusone/omnivault-keyring"
 )
 
 func main() {

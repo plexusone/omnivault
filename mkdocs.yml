@@ -1,8 +1,8 @@
 site_name: OmniVault
 site_description: Unified Go library for secret management across multiple providers
-site_url: https://agentplexus.github.io/omnivault
-repo_url: https://github.com/agentplexus/omnivault
-repo_name: agentplexus/omnivault
+site_url: https://plexusone.github.io/omnivault
+repo_url: https://github.com/plexusone/omnivault
+repo_name: plexusone/omnivault
 
 docs_dir: docs
 
@@ -55,6 +55,8 @@ nav:
       - Daemon: cli/daemon.md
       - Security: cli/security.md
   - Releases:
+      - v0.3.0: releases/v0.3.0.md
+      - v0.2.1: releases/v0.2.1.md
       - v0.2.0: releases/v0.2.0.md
       - v0.1.0: releases/v0.1.0.md
   - Changelog: changelog.md
@@ -62,4 +64,4 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/agentplexus/omnivault
+      link: https://github.com/plexusone/omnivault
