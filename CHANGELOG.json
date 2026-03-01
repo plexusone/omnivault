@@ -1,11 +1,34 @@
 {
   "ir_version": "1.0",
   "project": "omnivault",
-  "repository": "https://github.com/agentplexus/omnivault",
+  "repository": "https://github.com/plexusone/omnivault",
   "versioning": "semver",
   "commit_convention": "conventional",
   "unreleased": {},
   "releases": [
+    {
+      "version": "v0.3.0",
+      "date": "2026-03-01",
+      "highlights": [
+        {
+          "description": "Module path migrated from agentplexus to plexusone organization"
+        }
+      ],
+      "changed": [
+        {
+          "description": "Module path changed from `github.com/agentplexus/omnivault` to `github.com/plexusone/omnivault`"
+        },
+        {
+          "description": "All internal imports updated to use new module path"
+        },
+        {
+          "description": "Documentation URLs updated to plexusone organization"
+        },
+        {
+          "description": "Bump `golang.org/x/crypto` from 0.47.0 to 0.48.0"
+        }
+      ]
+    },
     {
       "version": "v0.2.1",
       "date": "2026-01-18",
