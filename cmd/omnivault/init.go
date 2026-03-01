@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/agentplexus/omnivault/internal/client"
+	"github.com/plexusone/omnivault/internal/client"
 	"golang.org/x/term"
 )
 

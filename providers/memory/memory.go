@@ -13,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // Provider implements vault.Vault with in-memory storage.

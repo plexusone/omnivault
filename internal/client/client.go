@@ -13,8 +13,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/agentplexus/omnivault/internal/config"
-	"github.com/agentplexus/omnivault/internal/daemon"
+	"github.com/plexusone/omnivault/internal/config"
+	"github.com/plexusone/omnivault/internal/daemon"
 )
 
 // Client is a client for the OmniVault daemon.

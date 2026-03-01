@@ -3,7 +3,7 @@ package omnivault
 import (
 	"errors"
 
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // Re-export common errors from the vault package for convenience.

@@ -1,6 +1,6 @@
 package omnivault
 
-import "github.com/agentplexus/omnivault/vault"
+import "github.com/plexusone/omnivault/vault"
 
 // Re-export types from the vault package for convenience.
 // Users can import just "omnivault" instead of "omnivault/vault".

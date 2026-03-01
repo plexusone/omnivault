@@ -3,10 +3,10 @@ package omnivault
 import (
 	"fmt"
 
-	"github.com/agentplexus/omnivault/providers/env"
-	"github.com/agentplexus/omnivault/providers/file"
-	"github.com/agentplexus/omnivault/providers/memory"
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/providers/env"
+	"github.com/plexusone/omnivault/providers/file"
+	"github.com/plexusone/omnivault/providers/memory"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // newProvider creates a vault provider based on the configuration.

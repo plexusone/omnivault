@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // Resolver handles URI-based secret resolution across multiple providers.

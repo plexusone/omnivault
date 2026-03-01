@@ -1,4 +1,4 @@
-module github.com/agentplexus/omnivault
+module github.com/plexusone/omnivault
 
 go 1.25.5
 

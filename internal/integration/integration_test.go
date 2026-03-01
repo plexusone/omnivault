@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/agentplexus/omnivault/internal/client"
-	"github.com/agentplexus/omnivault/internal/config"
-	"github.com/agentplexus/omnivault/internal/daemon"
+	"github.com/plexusone/omnivault/internal/client"
+	"github.com/plexusone/omnivault/internal/config"
+	"github.com/plexusone/omnivault/internal/daemon"
 )
 
 // testPortCounter is used to allocate unique ports for Windows tests.

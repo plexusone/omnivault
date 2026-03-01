@@ -14,7 +14,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // Config holds configuration for the environment variable provider.

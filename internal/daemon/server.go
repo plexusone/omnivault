@@ -15,9 +15,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/agentplexus/omnivault/internal/config"
-	"github.com/agentplexus/omnivault/internal/store"
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/internal/config"
+	"github.com/plexusone/omnivault/internal/store"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // Server is the OmniVault daemon server.

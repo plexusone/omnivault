@@ -18,7 +18,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // Config holds configuration for the file provider.

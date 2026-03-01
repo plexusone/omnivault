@@ -35,7 +35,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // Config holds configuration for creating a new Client.

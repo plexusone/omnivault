@@ -17,8 +17,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/agentplexus/omnivault"
-	"github.com/agentplexus/omnivault/vault"
+	"github.com/plexusone/omnivault"
+	"github.com/plexusone/omnivault/vault"
 )
 
 // CustomProvider is an example custom vault provider.
