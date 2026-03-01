@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://agentplexus.github.io/omnivault/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/changelog/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/changelog/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/installation/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/installation/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/cli/commands/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/cli/commands/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/cli/daemon/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/cli/daemon/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/cli/quickstart/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/cli/quickstart/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/cli/security/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/cli/security/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/library/client/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/library/client/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/library/custom-providers/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/library/custom-providers/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/library/providers/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/library/providers/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/library/quickstart/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/library/quickstart/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/library/resolver/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/library/resolver/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/releases/v0.1.0/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/releases/v0.1.0/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
     <url>
-         <loc>https://agentplexus.github.io/omnivault/releases/v0.2.0/</loc>
-         <lastmod>2026-02-22</lastmod>
+         <loc>https://plexusone.github.io/omnivault/releases/v0.2.0/</loc>
+         <lastmod>2026-03-01</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omnivault/releases/v0.2.1/</loc>
+         <lastmod>2026-03-01</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omnivault/releases/v0.3.0/</loc>
+         <lastmod>2026-03-01</lastmod>
     </url>
 </urlset>
