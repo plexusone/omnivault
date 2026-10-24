@@ -2,6 +2,9 @@ package vault
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
+	"log/slog"
 	"time"
 )
 
@@ -49,13 +52,41 @@ func (s *Secret) SetField(name, value string) {
 	s.Fields[name] = value
 }
 
-// String returns the primary value of the secret.
-func (s *Secret) String() string {
+// Redacted is what a [Secret] prints as. Formatting a secret with fmt or
+// logging it with log/slog never shows its value; call [Secret.Reveal] or
+// [Secret.Bytes] to read it.
+//
+// Secret deliberately has no String method. It used to return the value, so
+// code that called it to read the value now fails to compile instead of
+// silently receiving the redaction marker.
+const Redacted = "[REDACTED]"
+
+// Reveal returns the primary value of the secret: ValueBytes as a string if
+// set, otherwise Value. Use it where the value is needed, never to log it.
+func (s *Secret) Reveal() string {
 	if len(s.ValueBytes) > 0 {
 		return string(s.ValueBytes)
 	}
 	return s.Value
 }
+
+// GoString implements [fmt.GoStringer], so %#v is redacted too.
+func (s Secret) GoString() string { return Redacted }
+
+// Format implements [fmt.Formatter]. Every verb, including %v, %+v, %#v, %s,
+// %q and %x, prints [Redacted], so neither the value nor the fields of a
+// Secret or *Secret can be printed through fmt.
+func (s Secret) Format(f fmt.State, _ rune) {
+	// Format cannot return an error, and the fmt.State that fmt passes in
+	// writes to an in-memory buffer that does not fail.
+	if _, err := io.WriteString(f, Redacted); err != nil {
+		return
+	}
+}
+
+// LogValue implements [slog.LogValuer], so a secret logged with log/slog
+// records [Redacted].
+func (s Secret) LogValue() slog.Value { return slog.StringValue(Redacted) }
 
 // Bytes returns the secret value as bytes.
 func (s *Secret) Bytes() []byte {

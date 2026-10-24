@@ -142,8 +142,9 @@ type Metadata struct {
 ```go
 secret, _ := client.Get(ctx, "path")
 
-// Primary value as string
-value := secret.String()
+// Primary value as string. fmt and log/slog print "[REDACTED]" for a
+// secret, so it cannot leak into logs by accident.
+value := secret.Reveal()
 
 // Primary value as bytes
 bytes := secret.Bytes()

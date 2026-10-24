@@ -92,7 +92,7 @@ type Secret struct {
 }
 
 // Usage
-secret.String()              // Get primary value
+secret.Reveal()              // Get primary value
 secret.GetField("password")  // Get specific field
 secret.Bytes()               // Get as bytes
 ```

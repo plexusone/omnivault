@@ -433,7 +433,7 @@ secret := &omnivault.Secret{
 }
 
 // Access values
-value := secret.String()           // Primary value
+value := secret.Reveal()           // Primary value (fmt and slog print "[REDACTED]")
 value := secret.GetField("username") // Specific field
 bytes := secret.Bytes()            // As bytes
 ```

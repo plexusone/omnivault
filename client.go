@@ -108,7 +108,7 @@ func (c *Client) GetValue(ctx context.Context, path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return secret.String(), nil
+	return secret.Reveal(), nil
 }
 
 // GetField retrieves a specific field from a secret.

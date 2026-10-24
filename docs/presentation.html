@@ -78,7 +78,7 @@ secret, err := client.Get(ctx, <span class="hljs-string">&quot;database/password
 }
 
 <span class="hljs-comment">// Usage</span>
-secret.String()              <span class="hljs-comment">// Get primary value</span>
+secret.Reveal()              <span class="hljs-comment">// Get primary value</span>
 secret.GetField(<span class="hljs-string">&quot;password&quot;</span>)  <span class="hljs-comment">// Get specific field</span>
 secret.Bytes()               <span class="hljs-comment">// Get as bytes</span>
 </code></pre>

@@ -70,7 +70,7 @@ func (r *Resolver) Resolve(ctx context.Context, uri string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return secret.String(), nil
+	return secret.Reveal(), nil
 }
 
 // ResolveSecret resolves a secret reference URI and returns the full Secret.
