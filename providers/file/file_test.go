@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	osfs "github.com/grokify/oscompat/fs"
+
 	"github.com/plexusone/omnivault/vault"
 )
 
@@ -110,5 +112,53 @@ func TestSymlinkOutsideDirectoryRejected(t *testing.T) {
 	got, err := p.Get(ctx, "link")
 	if err == nil {
 		t.Fatalf("Get through a symlink leaving the directory returned %q, want an error", got.Value)
+	}
+}
+
+func TestGetRefusesFilesOthersCanRead(t *testing.T) {
+	if !osfs.PermissionsEnforced() {
+		t.Skip("file modes are not enforced on this platform")
+	}
+	ctx := context.Background()
+	p, parent := newJSONProvider(t)
+
+	if err := p.Set(ctx, "root_key", &vault.Secret{Value: "s3cret"}); err != nil {
+		t.Fatal(err)
+	}
+	name := filepath.Join(parent, "vault", "root_key.json")
+
+	for _, mode := range []os.FileMode{0o640, 0o644, 0o604} {
+		if err := os.Chmod(name, mode); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := p.Get(ctx, "root_key"); !errors.Is(err, ErrInsecurePermissions) {
+			t.Fatalf("Get with mode %04o: %v, want ErrInsecurePermissions", mode, err)
+		}
+	}
+
+	// The opt-out reads the same file.
+	lax, err := New(Config{
+		Directory:                filepath.Join(parent, "vault"),
+		JSONFormat:               true,
+		Extension:                ".json",
+		AllowInsecurePermissions: true,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := lax.Get(ctx, "root_key")
+	if err != nil {
+		t.Fatalf("Get with AllowInsecurePermissions: %v", err)
+	}
+	if got.Value != "s3cret" {
+		t.Fatalf("Value = %q, want %q", got.Value, "s3cret")
+	}
+
+	// Restoring a private mode makes the file readable again.
+	if err := os.Chmod(name, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := p.Get(ctx, "root_key"); err != nil {
+		t.Fatalf("Get with mode 0600: %v", err)
 	}
 }

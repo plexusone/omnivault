@@ -13,6 +13,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -42,7 +44,20 @@ type Config struct {
 
 	// ReadOnly prevents write and delete operations.
 	ReadOnly bool
+
+	// AllowInsecurePermissions lets Get read secret files that group or
+	// others can access. By default such files are refused with
+	// [ErrInsecurePermissions], because a secret any local user can read is
+	// not secret. Set it only where the mode is outside your control and
+	// access is restricted some other way. Platforms that do not enforce
+	// file modes, such as Windows, are never refused.
+	AllowInsecurePermissions bool
 }
+
+// ErrInsecurePermissions is returned by Get for a secret file that group or
+// others can access. Restrict the file to its owner (chmod 600), or set
+// [Config.AllowInsecurePermissions].
+var ErrInsecurePermissions = errors.New("secret file is accessible by group or others")
 
 // Provider implements vault.Vault with file-based storage.
 type Provider struct {
@@ -116,11 +131,35 @@ func (p *Provider) Get(ctx context.Context, path string) (_ *vault.Secret, err e
 	}
 	defer closeRoot(root, &err)
 
-	data, err := root.ReadFile(name)
+	f, err := root.Open(name)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil, vault.NewVaultError("Get", path, p.Name(), vault.ErrSecretNotFound)
 		}
+		return nil, vault.NewVaultError("Get", path, p.Name(), err)
+	}
+	defer func() {
+		if cerr := f.Close(); cerr != nil && err == nil {
+			err = vault.NewVaultError("Get", path, p.Name(), cerr)
+		}
+	}()
+
+	// Check the open file rather than the path, so the file checked is the
+	// file read.
+	info, err := f.Stat()
+	if err != nil {
+		return nil, vault.NewVaultError("Get", path, p.Name(), err)
+	}
+	if !info.Mode().IsRegular() {
+		return nil, vault.NewVaultError("Get", path, p.Name(), vault.ErrInvalidPath)
+	}
+	if !p.config.AllowInsecurePermissions && !osfs.IsPrivate(info) {
+		return nil, vault.NewVaultError("Get", path, p.Name(),
+			fmt.Errorf("%w: mode %04o", ErrInsecurePermissions, info.Mode().Perm()))
+	}
+
+	data, err := io.ReadAll(f)
+	if err != nil {
 		return nil, vault.NewVaultError("Get", path, p.Name(), err)
 	}
 
@@ -140,10 +179,7 @@ func (p *Provider) Get(ctx context.Context, path string) (_ *vault.Secret, err e
 	secret.Metadata.Path = path
 
 	// Add file info to metadata
-	if info, err := root.Stat(name); err == nil {
-		modTime := info.ModTime()
-		secret.Metadata.ModifiedAt = &vault.Timestamp{Time: modTime}
-	}
+	secret.Metadata.ModifiedAt = &vault.Timestamp{Time: info.ModTime()}
 
 	return secret, nil
 }

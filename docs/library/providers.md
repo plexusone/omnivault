@@ -63,6 +63,13 @@ A secret path names a file inside `Directory`. Paths that are empty, absolute,
 or climb out of the directory with `..` are rejected with `vault.ErrInvalidPath`,
 and a symbolic link inside the directory cannot be followed to a file outside it.
 
+`Get` refuses a secret file that group or others can access (any mode bit in
+`0077`) with `file.ErrInsecurePermissions`; restrict the file with `chmod 600`.
+Where the mode is outside your control, for example a Kubernetes secret volume
+mounted with the default mode `0644`, set `defaultMode: 0600` on the volume or,
+if access is restricted some other way, set `AllowInsecurePermissions: true`.
+Windows does not enforce file modes and is never refused.
+
 **URI Scheme:** `file://`
 
 ```go
