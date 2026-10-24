@@ -43,7 +43,7 @@ Read secrets from files:
 import "github.com/plexusone/omnivault/providers/file"
 
 provider := file.New(file.Config{
-    BasePath: "/etc/secrets",
+    Directory: "/etc/secrets",
 })
 
 // Or use with client
@@ -59,10 +59,14 @@ client, _ := omnivault.NewClient(omnivault.Config{
 | Delete | Yes |
 | List | Yes |
 
+A secret path names a file inside `Directory`. Paths that are empty, absolute,
+or climb out of the directory with `..` are rejected with `vault.ErrInvalidPath`,
+and a symbolic link inside the directory cannot be followed to a file outside it.
+
 **URI Scheme:** `file://`
 
 ```go
-resolver.Register("file", file.New(file.Config{BasePath: "/etc/secrets"}))
+resolver.Register("file", file.New(file.Config{Directory: "/etc/secrets"}))
 value, _ := resolver.Resolve(ctx, "file://database/password")
 ```
 
