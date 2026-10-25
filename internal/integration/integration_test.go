@@ -91,7 +91,10 @@ func (e *testEnv) cleanup() {
 
 	// Wait for server to stop
 	select {
-	case <-e.serverErr:
+	case err := <-e.serverErr:
+		if err != nil {
+			e.t.Errorf("server stopped with error: %v", err)
+		}
 	case <-time.After(2 * time.Second):
 		e.t.Log("Server did not stop gracefully")
 	}
