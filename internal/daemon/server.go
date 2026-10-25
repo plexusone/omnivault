@@ -444,7 +444,7 @@ func (s *Server) getSecret(w http.ResponseWriter, r *http.Request, path string) 
 
 	resp := SecretResponse{
 		Path:   path,
-		Value:  secret.String(),
+		Value:  secret.Reveal(),
 		Fields: secret.Fields,
 	}
 	if secret.Metadata.Tags != nil {
@@ -606,7 +606,7 @@ func (s *Server) handleExport(w http.ResponseWriter, r *http.Request) {
 
 		exported := ExportedSecret{
 			Path:   path,
-			Value:  secret.String(),
+			Value:  secret.Reveal(),
 			Fields: secret.Fields,
 		}
 		if secret.Metadata.Tags != nil {

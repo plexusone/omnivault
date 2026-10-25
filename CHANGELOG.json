@@ -6,6 +6,124 @@
   "commitConvention": "conventional",
   "releases": [
     {
+      "version": "v0.6.0",
+      "date": "2026-10-25",
+      "highlights": [
+        {
+          "description": "Security release: secrets are redacted when formatted or logged, and the file provider keeps secret paths inside its directory and refuses secret files other users can read. Adds a SQL table-backed provider (`sql://`). `Secret.String` is removed in favour of `Secret.Reveal`"
+        }
+      ],
+      "breaking": [
+        {
+          "description": "`vault.Secret.String` is removed. Formatting a `Secret` or `*Secret` with `fmt` (any verb) or logging it with `log/slog` now prints `[REDACTED]`; read the value with `Secret.Reveal` (or `Secret.Bytes`)",
+          "commit": "45cd023"
+        },
+        {
+          "description": "File provider: a secret path that is empty, absolute or leaves the directory with `..` fails with `vault.ErrInvalidPath`, and a symbolic link resolving outside the directory is refused",
+          "commit": "b8dcc6f"
+        },
+        {
+          "description": "File provider: `Get` returns an error matching `file.ErrInsecurePermissions` for a secret file that group or others can access, unless `Config.AllowInsecurePermissions` is set",
+          "commit": "86e8974"
+        },
+        {
+          "description": "The module now requires Go 1.26",
+          "commit": "2c62f21"
+        }
+      ],
+      "upgradeGuide": [
+        {
+          "description": "Replace every `secret.String()` call with `secret.Reveal()`; the compiler finds these"
+        },
+        {
+          "description": "Search for code that obtains the value by formatting a secret, such as `fmt.Sprintf(\"%s\", secret)` or `fmt.Sprint(secret)`, and use `secret.Reveal()` instead; these still compile but now yield `[REDACTED]`"
+        },
+        {
+          "description": "File provider: make secret files private (`chmod 600`); for a mounted volume you cannot change, set `defaultMode: 0600` or, if access is restricted another way, `file.Config{AllowInsecurePermissions: true}`"
+        },
+        {
+          "description": "File provider: use secret paths relative to `Directory`, without `..` segments or absolute paths, and replace symbolic links that point outside the directory with the files themselves"
+        },
+        {
+          "description": "Build with Go 1.26 or later, then run `go get github.com/plexusone/omnivault@v0.6.0` and `go mod tidy`"
+        }
+      ],
+      "security": [
+        {
+          "description": "`Secret.String` returned the plaintext value, so passing a secret to `fmt`, wrapping it into an error with `%v`, or logging it with `log/slog` wrote the value into logs; formatting a `Secret` value (not a pointer) also printed its `Value` and `Fields`. `GoString`, `Format` and `LogValue` now produce `[REDACTED]` (`vault.Redacted`) for `Secret` and `*Secret`, for every `fmt` verb and for `log/slog`. JSON encoding is unchanged, since providers use it to store and transfer secrets",
+          "commit": "45cd023"
+        },
+        {
+          "description": "The file provider joined the secret path onto its directory without checking the result, so a path such as `../other/secret` read, wrote or deleted files outside the directory, and a symbolic link inside the directory could point anywhere. Secret paths must now be local, and files are opened through `os.Root`, which also refuses symbolic links that resolve outside the directory",
+          "commit": "b8dcc6f"
+        },
+        {
+          "description": "The file provider wrote secret files with a private mode but read any file regardless of its mode, so a group- or world-readable secret was accepted silently. `Get` now checks the mode of the opened file; platforms that do not enforce file modes are unaffected",
+          "commit": "86e8974"
+        }
+      ],
+      "added": [
+        {
+          "description": "`Secret.Reveal` returns the primary value (`ValueBytes` as a string if set, otherwise `Value`), and `vault.Redacted` is the marker a secret prints as",
+          "commit": "45cd023"
+        },
+        {
+          "description": "`file.Config.AllowInsecurePermissions` and `file.ErrInsecurePermissions`",
+          "commit": "86e8974"
+        },
+        {
+          "description": "SQL table-backed provider (`providers/sqlstore`) storing AES-GCM encrypted secrets in an application-owned table, for MySQL-compatible databases (including Dolt), PostgreSQL and SQLite, with optional auto-migration and read-only mode",
+          "commit": "bbd1643"
+        },
+        {
+          "description": "`ProviderSQL` and the `SQLConfig` alias, so `sql://` URIs resolve through the same config-based provider dispatch as the other built-in providers",
+          "commit": "7d9e569"
+        }
+      ],
+      "changed": [
+        {
+          "description": "Bump `github.com/grokify/oscompat` from 0.3.0 to 0.9.0, which provides the private-permission check the file provider uses",
+          "commit": "571a8ac"
+        },
+        {
+          "description": "Bump `golang.org/x/crypto` from 0.52.0 to 0.57.0",
+          "commit": "65e0815"
+        },
+        {
+          "description": "Bump `golang.org/x/term` from 0.43.0 to 0.46.0",
+          "commit": "2c62f21"
+        },
+        {
+          "description": "`sqlstore`: drop an unused placeholder index parameter",
+          "commit": "ea28ca4"
+        }
+      ],
+      "documentation": [
+        {
+          "description": "README documents the `sql://` SQL store provider",
+          "commit": "a591464"
+        },
+        {
+          "description": "Provider guide documents the file provider's path and permission rules and uses the `Directory` config field",
+          "commit": "86e8974"
+        },
+        {
+          "description": "Client and quickstart guides read secrets with `Reveal`",
+          "commit": "45cd023"
+        }
+      ],
+      "tests": [
+        {
+          "description": "Tests for the SQL provider",
+          "commit": "5cf5d99"
+        },
+        {
+          "description": "Tests for secret redaction across `fmt` verbs and `log/slog`, and for path containment and permission checks in the file provider",
+          "commit": "45cd023"
+        }
+      ]
+    },
+    {
       "version": "v0.5.0",
       "date": "2026-05-23",
       "highlights": [

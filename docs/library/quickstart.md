@@ -134,7 +134,7 @@ err := client.Set(ctx, "database/credentials", secret)
 
 // Retrieve and access values
 retrieved, _ := client.Get(ctx, "database/credentials")
-fmt.Println(retrieved.String())              // Primary value
+fmt.Println(retrieved.Reveal())              // Primary value
 fmt.Println(retrieved.GetField("username"))  // Specific field
 fmt.Println(retrieved.Bytes())               // As bytes
 ```

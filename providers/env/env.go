@@ -65,7 +65,7 @@ func (p *Provider) Set(ctx context.Context, path string, secret *vault.Secret) e
 		return vault.NewVaultError("Set", path, p.Name(), vault.ErrReadOnly)
 	}
 	name := p.config.Prefix + path
-	return os.Setenv(name, secret.String())
+	return os.Setenv(name, secret.Reveal())
 }
 
 // Delete unsets an environment variable.

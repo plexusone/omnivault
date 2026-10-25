@@ -13,6 +13,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -42,7 +44,20 @@ type Config struct {
 
 	// ReadOnly prevents write and delete operations.
 	ReadOnly bool
+
+	// AllowInsecurePermissions lets Get read secret files that group or
+	// others can access. By default such files are refused with
+	// [ErrInsecurePermissions], because a secret any local user can read is
+	// not secret. Set it only where the mode is outside your control and
+	// access is restricted some other way. Platforms that do not enforce
+	// file modes, such as Windows, are never refused.
+	AllowInsecurePermissions bool
 }
+
+// ErrInsecurePermissions is returned by Get for a secret file that group or
+// others can access. Restrict the file to its owner (chmod 600), or set
+// [Config.AllowInsecurePermissions].
+var ErrInsecurePermissions = errors.New("secret file is accessible by group or others")
 
 // Provider implements vault.Vault with file-based storage.
 type Provider struct {
@@ -73,24 +88,78 @@ func New(config Config) (*Provider, error) {
 	return &Provider{config: config}, nil
 }
 
-// filepath returns the full path for a secret.
-func (p *Provider) filepath(path string) string {
-	filename := path
-	if p.config.Extension != "" {
-		filename = path + p.config.Extension
+// filename returns the name of a secret's file relative to the directory. It
+// rejects a path that is empty, absolute, or climbs out of the directory with
+// "..", so that a secret path can only name a file inside the directory.
+func (p *Provider) filename(op, path string) (string, error) {
+	name := path + p.config.Extension
+	if path == "" || !filepath.IsLocal(name) {
+		return "", vault.NewVaultError(op, path, p.Name(), vault.ErrInvalidPath)
 	}
-	return filepath.Join(p.config.Directory, filename)
+	return name, nil
+}
+
+// openRoot opens the directory as an [os.Root], which refuses any access that
+// would leave it, including through a symbolic link that points outside.
+func (p *Provider) openRoot(op, path string) (*os.Root, error) {
+	root, err := os.OpenRoot(p.config.Directory)
+	if err != nil {
+		return nil, vault.NewVaultError(op, path, p.Name(), err)
+	}
+	return root, nil
+}
+
+// closeRoot closes root, keeping err if it is already set.
+func closeRoot(root *os.Root, err *error) {
+	if cerr := root.Close(); cerr != nil && *err == nil {
+		*err = cerr
+	}
 }
 
 // Get retrieves a secret from a file.
-func (p *Provider) Get(ctx context.Context, path string) (*vault.Secret, error) {
-	fp := p.filepath(path)
+func (p *Provider) Get(ctx context.Context, path string) (_ *vault.Secret, err error) {
+	name, err := p.filename("Get", path)
+	if err != nil {
+		return nil, err
+	}
+	root, err := p.openRoot("Get", path)
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil, vault.NewVaultError("Get", path, p.Name(), vault.ErrSecretNotFound)
+		}
+		return nil, err
+	}
+	defer closeRoot(root, &err)
 
-	data, err := os.ReadFile(fp)
+	f, err := root.Open(name)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil, vault.NewVaultError("Get", path, p.Name(), vault.ErrSecretNotFound)
 		}
+		return nil, vault.NewVaultError("Get", path, p.Name(), err)
+	}
+	defer func() {
+		if cerr := f.Close(); cerr != nil && err == nil {
+			err = vault.NewVaultError("Get", path, p.Name(), cerr)
+		}
+	}()
+
+	// Check the open file rather than the path, so the file checked is the
+	// file read.
+	info, err := f.Stat()
+	if err != nil {
+		return nil, vault.NewVaultError("Get", path, p.Name(), err)
+	}
+	if !info.Mode().IsRegular() {
+		return nil, vault.NewVaultError("Get", path, p.Name(), vault.ErrInvalidPath)
+	}
+	if !p.config.AllowInsecurePermissions && !osfs.IsPrivate(info) {
+		return nil, vault.NewVaultError("Get", path, p.Name(),
+			fmt.Errorf("%w: mode %04o", ErrInsecurePermissions, info.Mode().Perm()))
+	}
+
+	data, err := io.ReadAll(f)
+	if err != nil {
 		return nil, vault.NewVaultError("Get", path, p.Name(), err)
 	}
 
@@ -110,30 +179,35 @@ func (p *Provider) Get(ctx context.Context, path string) (*vault.Secret, error) 
 	secret.Metadata.Path = path
 
 	// Add file info to metadata
-	if info, err := os.Stat(fp); err == nil {
-		modTime := info.ModTime()
-		secret.Metadata.ModifiedAt = &vault.Timestamp{Time: modTime}
-	}
+	secret.Metadata.ModifiedAt = &vault.Timestamp{Time: info.ModTime()}
 
 	return secret, nil
 }
 
 // Set stores a secret to a file.
-func (p *Provider) Set(ctx context.Context, path string, secret *vault.Secret) error {
+func (p *Provider) Set(ctx context.Context, path string, secret *vault.Secret) (err error) {
 	if p.config.ReadOnly {
 		return vault.NewVaultError("Set", path, p.Name(), vault.ErrReadOnly)
 	}
 
-	fp := p.filepath(path)
+	name, err := p.filename("Set", path)
+	if err != nil {
+		return err
+	}
+	root, err := p.openRoot("Set", path)
+	if err != nil {
+		return err
+	}
+	defer closeRoot(root, &err)
 
 	// Ensure parent directory exists
-	dir := filepath.Dir(fp)
-	if err := os.MkdirAll(dir, p.config.DirMode); err != nil {
-		return vault.NewVaultError("Set", path, p.Name(), err)
+	if dir := filepath.Dir(name); dir != "." {
+		if err := root.MkdirAll(dir, p.config.DirMode); err != nil {
+			return vault.NewVaultError("Set", path, p.Name(), err)
+		}
 	}
 
 	var data []byte
-	var err error
 
 	if p.config.JSONFormat {
 		data, err = json.MarshalIndent(secret, "", "  ")
@@ -144,7 +218,7 @@ func (p *Provider) Set(ctx context.Context, path string, secret *vault.Secret) e
 		data = secret.Bytes()
 	}
 
-	if err := os.WriteFile(fp, data, p.config.FileMode); err != nil {
+	if err := root.WriteFile(name, data, p.config.FileMode); err != nil {
 		return vault.NewVaultError("Set", path, p.Name(), err)
 	}
 
@@ -152,14 +226,25 @@ func (p *Provider) Set(ctx context.Context, path string, secret *vault.Secret) e
 }
 
 // Delete removes a secret file.
-func (p *Provider) Delete(ctx context.Context, path string) error {
+func (p *Provider) Delete(ctx context.Context, path string) (err error) {
 	if p.config.ReadOnly {
 		return vault.NewVaultError("Delete", path, p.Name(), vault.ErrReadOnly)
 	}
 
-	fp := p.filepath(path)
+	name, err := p.filename("Delete", path)
+	if err != nil {
+		return err
+	}
+	root, err := p.openRoot("Delete", path)
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil // No directory, so nothing to delete
+		}
+		return err
+	}
+	defer closeRoot(root, &err)
 
-	if err := os.Remove(fp); err != nil {
+	if err := root.Remove(name); err != nil {
 		if os.IsNotExist(err) {
 			return nil // Already deleted, not an error
 		}
@@ -170,9 +255,21 @@ func (p *Provider) Delete(ctx context.Context, path string) error {
 }
 
 // Exists checks if a secret file exists.
-func (p *Provider) Exists(ctx context.Context, path string) (bool, error) {
-	fp := p.filepath(path)
-	_, err := os.Stat(fp)
+func (p *Provider) Exists(ctx context.Context, path string) (_ bool, err error) {
+	name, err := p.filename("Exists", path)
+	if err != nil {
+		return false, err
+	}
+	root, err := p.openRoot("Exists", path)
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return false, nil
+		}
+		return false, err
+	}
+	defer closeRoot(root, &err)
+
+	_, err = root.Stat(name)
 	if err == nil {
 		return true, nil
 	}
